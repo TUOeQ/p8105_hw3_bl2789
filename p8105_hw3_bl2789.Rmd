@@ -7,14 +7,14 @@ output: github_document
 # Problem 1
 ## a
 ```{r setup, include=FALSE}
-
-```
-
-```{r}
+knitr::opts_chunk$set(echo = TRUE)
 library(p8105.datasets)
 library(tidyverse)
 data("instacart")
 str(instacart)
+```
+
+```{r}
 aisle = instacart%>%
         group_by(aisle)%>%
         summarize(count=n()) %>%
@@ -22,11 +22,50 @@ aisle = instacart%>%
 
 most = which.max(pull(aisle,count))
 
-       
-
-
-
 ```
-* How many aisles are there, and which aisles are the most items ordered from?
 
-There are **`r max(pull(instacart,aisle_id))`** aisles and the **`r aisle$aisle[most]`** are the most items ordered from.
+* There are **`r max(pull(instacart,aisle_id))`** aisles and the **`r aisle$aisle[most]`** are the most items ordered from.
+
+## b
+```{r}
+aisle_10k = aisle %>%
+            filter(count>10000) %>%
+            arrange(desc(count))
+
+ggplot(aisle_10k,aes(x = reorder(aisle,count), y = count))+
+  geom_bar(stat="identity",fill="lightblue3" )+ 
+  coord_flip()+
+  labs(
+    title = " Number of items ordered more than 10k",
+    x = "Aisle name",
+    y = "Items ordered most",
+    caption = "Data from INSTACART")
+```
+
+
+## c
+```{r}
+
+pop_baking_items = instacart %>% 
+            filter(aisle == "baking ingredients")%>%
+            group_by(aisle,product_name)%>%
+            summarize(n()) %>%
+            top_n(3)
+            
+            
+pop_dog_items = instacart %>% 
+            filter(aisle == "dog food care")%>%
+            group_by(aisle,product_name)%>%
+            summarize(n()) %>%
+            top_n(3)
+            
+pop_vege_items = instacart %>% 
+            filter(aisle == "packaged vegetables fruits")%>%
+            group_by(aisle,product_name)%>%
+            summarize(n()) %>%
+            top_n(3)
+            
+
+rbind(pop_baking_items,pop_dog_items,pop_vege_items)
+```
+
