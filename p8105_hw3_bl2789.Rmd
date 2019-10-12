@@ -12,7 +12,21 @@ output: github_document
 
 ```{r}
 library(p8105.datasets)
+library(tidyverse)
 data("instacart")
+str(instacart)
+aisle = instacart%>%
+        group_by(aisle)%>%
+        summarize(count=n()) %>%
+        arrange(desc(count))
+
+most = which.max(pull(aisle,count))
+
+       
+
+
 
 ```
 * How many aisles are there, and which aisles are the most items ordered from?
+
+There are **`r max(pull(instacart,aisle_id))`** aisles and the **`r aisle$aisle[most]`** are the most items ordered from.
