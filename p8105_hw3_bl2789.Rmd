@@ -46,26 +46,26 @@ ggplot(aisle_10k,aes(x = reorder(aisle,count), y = count))+
 ## c
 ```{r}
 
-pop_baking_items = instacart %>% 
-            filter(aisle == "baking ingredients")%>%
+pop_items = instacart %>% 
+            filter(aisle == "baking ingredients"|aisle == "dog food care"|aisle ==                  "packaged vegetables fruits")%>%
             group_by(aisle,product_name)%>%
             summarize(n()) %>%
             top_n(3)
-            
-            
-pop_dog_items = instacart %>% 
-            filter(aisle == "dog food care")%>%
-            group_by(aisle,product_name)%>%
-            summarize(n()) %>%
-            top_n(3)
-            
-pop_vege_items = instacart %>% 
-            filter(aisle == "packaged vegetables fruits")%>%
-            group_by(aisle,product_name)%>%
-            summarize(n()) %>%
-            top_n(3)
-            
+pop_items
+```
 
-rbind(pop_baking_items,pop_dog_items,pop_vege_items)
+## d 
+
+```{r}
+Ordered_time = instacart%>%
+                filter(product_name == "Pink Lady Apples") %>%
+                select(product_name,order_dow,order_hour_of_day)%>%
+                group_by(product_name,order_dow)%>%
+                mutate(mean = mean(order_hour_of_day))%>%
+                select(product_name,order_dow,mean)
+
+
+
+  
 ```
 
