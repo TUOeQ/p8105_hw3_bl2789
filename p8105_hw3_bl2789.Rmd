@@ -83,6 +83,12 @@ pivot_wider(Order,names_from = order_dow,values_from = mean_hours)
 ##a 
 
 ```{r}
-brfss_smart2010 = brfss_smart2010 %>% janitor::clean_names() 
+brfss = brfss_smart2010%>%
+                  janitor::clean_names()%>%
+                  select(location_abbr = locationabbr,location_desc = locationdesc,   resp_id = respid,everything())%>%
+                  filter(topic == "Overall Health")%>%
+                  arrange(response)%>%
+                  factor(response,order=TRUE,levels = c("Excellent","Very good","Good","Fair", "Poor"))
+
 ```
 
