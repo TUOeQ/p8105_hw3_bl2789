@@ -57,15 +57,32 @@ pop_items
 ## d 
 
 ```{r}
-Ordered_time = instacart%>%
-                filter(product_name == "Pink Lady Apples") %>%
-                select(product_name,order_dow,order_hour_of_day)%>%
-                group_by(product_name,order_dow)%>%
-                mutate(mean = mean(order_hour_of_day))%>%
-                select(product_name,order_dow,mean)
+library(data.table)
+Ordered_time_apple = instacart%>%
+              filter(department == "produce")%>%
+              filter(product_name %like% "Pink Lady")%>%
+              group_by(order_dow) %>% 
+              summarise(mean_hours = mean(order_hour_of_day)) %>% 
+              mutate(product_name='Pink Lady Apple')%>%
+              select(product_name,order_dow,mean_hours) 
 
+Ordered_time_coffee = instacart%>%
+              filter(aisle == "ice cream ice")%>%
+              filter(product_name %like% "Coffee")%>%
+              group_by(order_dow) %>% 
+              summarise(mean_hours = mean(order_hour_of_day)) %>% 
+              mutate(product_name='Coffee Ice Cream')%>%
+              select(product_name,order_dow,mean_hours)
 
-
+Order = rbind(Ordered_time_apple,Ordered_time_coffee)
+pivot_wider(Order,names_from = order_dow,values_from = mean_hours)
   
+```
+
+# Problem 2
+##a 
+
+```{r}
+brfss_smart2010 = brfss_smart2010 %>% janitor::clean_names() 
 ```
 
