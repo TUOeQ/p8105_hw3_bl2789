@@ -80,7 +80,7 @@ pivot_wider(Order,names_from = order_dow,values_from = mean_hours)
 ```
 
 # Problem 2
-##a 
+## Data cleaning 
 
 ```{r}
 brfss_smart = brfss_smart2010%>%
@@ -88,7 +88,7 @@ brfss_smart = brfss_smart2010%>%
                   select(location_abbr = locationabbr,location_desc = locationdesc,   resp_id = respid,everything())%>%
                   filter(topic == "Overall Health")
 
-my_levels = c("Excellent","Very good","Good","Fair", "Poor")
+my_levels = c("Excellent","Very good","Good","Fair","Poor")
 response_adj = factor(pull(brfss_smart,response),levels = my_levels)
                   
 brfss = brfss_smart%>%
@@ -96,6 +96,34 @@ brfss = brfss_smart%>%
         select(response_adj,everything(),-response)%>%
         arrange(desc(response_adj))
 
-
 ```
 
+## a
+```{r}
+observed_2002 = brfss%>%
+           filter(year == 2002)%>%
+           group_by(location_abbr)%>%
+           summarize(count=n())%>%
+           filter(count/5>=7)%>%
+           mutate(year = 2002)
+  
+observed_2010 = brfss%>%
+           filter(year == 2010)%>%
+           group_by(location_abbr)%>%
+           summarize(count=n())%>%
+           filter(count/5>=7)%>%
+           mutate(year = 2010)
+```
+* In 2002,The states *`r pull(observed_2002,location_abbr)`* were observed at 7 or more locations. And in year 2010, *`r pull(observed_2010,location_abbr)`* were observed at 7 or more locations.
+
+## b 
+```{r}
+subset = brfss%>%
+         filter(response_adj == "Excellent")%>%
+         select(year,location_abbr,data_value)%>%
+         group_by(year,location_abbr)%>%
+         mutate(average = mean(data_value))%>%
+         select(-data_value)%>%
+         distinct() 
+         
+```
