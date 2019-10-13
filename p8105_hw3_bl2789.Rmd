@@ -166,7 +166,7 @@ grid.arrange(plot_2006, plot_2010, nrow = 2)
 accel_data = 
   read_csv(file = "C:/Users/61693/Desktop/data Science/p8105/accel_data.csv")%>%
   janitor::clean_names()
-  mutate(weekday = )
+  
   
   
 ```
