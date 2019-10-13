@@ -125,5 +125,36 @@ subset = brfss%>%
          mutate(average = mean(data_value))%>%
          select(-data_value)%>%
          distinct() 
-         
+
+ggplot(subset,aes(x=year,y=average,col=location_abbr))+ 
+  geom_line(aes(group = location_abbr))
 ```
+
+## c
+```{r}
+library(grid)
+NY_2006 = brfss%>%
+          filter(year == 2006 & location_abbr == "NY")
+plot_2006 = ggplot(NY_2006,aes(x=response_adj, y = data_value))+
+  geom_bar(stat = "identity", fill = "lightblue3")+ 
+  coord_flip()+
+  labs(
+    title = "Distribution of data_value for responses in 2006",
+    x = "Response",
+    y = "Data",
+    caption = "Data from Newyork States")
+
+NY_2010 = brfss%>%
+          filter(year == 2010 & location_abbr == "NY")
+plot_2010 = ggplot(NY_2010,aes(x=response_adj, y = data_value))+
+  geom_bar(stat = "identity", fill = "lightblue3")+
+  coord_flip()+
+  labs(
+    title = "Distribution of data_value for responses in 2010",
+    x = "Response",
+    y = "Data",
+    caption = "Data from Newyork States")
+
+grid.arrange(plot_2006, plot_2010, ncol = 2)
+```
+
