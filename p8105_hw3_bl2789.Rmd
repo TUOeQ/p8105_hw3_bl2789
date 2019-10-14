@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(p8105.datasets)
 library(tidyverse)
 library(data.table)
+library(kableExtra)
 data("instacart")
 ```
 
@@ -61,7 +62,7 @@ pop_items = instacart %>%
             summarize(count =n()) %>%
             top_n(3)%>%
             arrange(desc(count))
-pop_items
+kable(pop_items, format = "markdown")
 ```
 
 * The top 3 best sells among packaged vegetables fruits are all organic foods, including Spinach, Raspberries, blueberries. 
@@ -90,7 +91,9 @@ Ordered_time_coffee = instacart%>%
               select(product_name,order_dow,mean_hours)
 
 Order = rbind(Ordered_time_apple,Ordered_time_coffee)
-pivot_wider(Order,names_from = order_dow,values_from = mean_hours)
+wider = pivot_wider(Order,names_from = order_dow,values_from = mean_hours)
+
+kable(wider, format = "markdown")
   
 ```
 
