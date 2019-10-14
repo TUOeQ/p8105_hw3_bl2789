@@ -10,6 +10,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 library(p8105.datasets)
 library(tidyverse)
+library(data.table)
 data("instacart")
 str(instacart)
 ```
@@ -165,8 +166,15 @@ grid.arrange(plot_2006, plot_2010, nrow = 2)
 ```{r}
 accel_data = 
   read_csv(file = "./accel_data.csv")%>%
-  janitor::clean_names()
-  
-  
+  janitor::clean_names()%>%
+  mutate(weekday = ifelse(day %in% c("Monday", "Tuesday","Wednesday","Thursday","Friday"),1,0))%>%
+  pivot_longer(activity_1:activity_1440,names_to = "minute",values_to = "activity_counts")
+
+
+
+ 
+
+
+
 ```
 
