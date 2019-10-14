@@ -168,13 +168,37 @@ accel_data =
   read_csv(file = "./accel_data.csv")%>%
   janitor::clean_names()%>%
   mutate(weekday = ifelse(day %in% c("Monday", "Tuesday","Wednesday","Thursday","Friday"),1,0))%>%
-  pivot_longer(activity_1:activity_1440,names_to = "minute",values_to = "activity_counts")
+  pivot_longer(activity_1:activity_1440,names_to = "minute",values_to = "activity_counts")%>%
+  mutate(minute_number = as.integer(rep(c(1:1440),time = 35)))
 
+```
+* There are  `r nrow(accel_data)` observations and `r ncol(accel_data)` variables, including `r colnames(accel_data)`.
 
+## b
+```{r}
 
- 
+aggregate = accel_data%>%
+          group_by(week,day_id,day) %>% 
+          summarise(sum_of_day = sum(activity_counts))
 
+my_levels = c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+day_adj = factor(pull(accel_data,day),levels = my_levels)
 
+aggregate_day = accel_data%>%
+                mutate(day_adj)%>%
+                group_by(week,day_id,day_adj)%>% 
+                summarise(sum_of_day = sum(activity_counts))%>%
+                arrange(day_adj)
+aggregate_day
+ggplot(aggregate_day,aes(x=week,y=sum_of_day,fill = day_adj))+
+  geom_bar(stat = "identity",position=position_dodge())+ 
+  labs(
+    title = "Distribution of total activity for each day",
+    x = "days falls in weeks",
+    y = "The total counts for one day",
+    caption = "accel_data") 
 
+  
+        
 ```
 
