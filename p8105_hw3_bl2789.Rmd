@@ -94,7 +94,7 @@ pivot_wider(Order,names_from = order_dow,values_from = mean_hours)
   
 ```
 
-*  People are most likely to buy Pink lady apple arould 13:00 and Coffee Ice cream at 14:00 in each day of the week, and also the 0 stands for Sunday, 1 for Monday,2 for Tuesday and etc. still 6 to Saturday.
+*  People are most likely to buy Pink lady apple arould 13:00 and Coffee Ice cream at 14:00 in each day of the week, and also the 0 stands for Sunday, 1 for Monday,2 for Tuesday and etc. till 6 to Saturday.
 
 # Problem 2
 ## Data cleaning 
